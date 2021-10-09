@@ -1,5 +1,45 @@
+/*
+import './App.css';
+import Error from './components/errorBoundary/Error';
+import ErrorBoundary from './components/errorBoundary/ErrorBoundary';
+import ProductCard from './components/productCard/ProductCard';
+import Sample from './components/Sample';
+import ProductList from './mockData/productList'
+
+function App() {
+  
+    return (
+      
+      <div className="App">
+      {/* {ProductList.map(product => {
+        return(
+          <ErrorBoundary>
+          <ProductCard
+            image={product.image}
+            title={product.title}
+            price={product.price}
+            rating={product.rating}
+            review={product.review}
+            isPrime={product.isPrime}
+          />
+          </ErrorBoundary>
+        )
+      })}
+      <ErrorBoundary>
+      <Error/>
+      </ErrorBoundary> }
+      <Sample/>
+      </div>
+    );
+  
+}
+
+export default App;
+
+*/
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 const movies = [
   {
     rank: 1,
@@ -110,15 +150,18 @@ const movies = [
 function App() {
   const [add, setadd]=useState(false);
   const [movie, setMovie] = useState(movies);
-
+  useEffect(() => {
+    console.log(movie)
+  })
   
   return (
     <div className="App">
       <img src="data:image/jpeg;base64,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" alt='imdb logo' height='80'/>
       <h1>Top Rated Movies</h1>
-      {movie.map((movies, index) => (
+      {movie.map((movies, index) => {
+        return(
         <MovieInfo
-          key={index}
+          movInd={index}
           rank={movies.rank}
           movies={movies.name}
           pic={movies.pic}
@@ -126,8 +169,10 @@ function App() {
           directors={movies.directors}
           writers={movies.writers}
           stars={movies.stars}
-        />
-      ))}
+          allMovies={movie}
+          setMovie={setMovie}
+        />)
+})}
       <button className='btn btn-primary' onClick={()=>setadd(true)}>Add Movies</button>
       {add && <AddMovies movie={movie} setMovie={setMovie}/>}
       
@@ -136,6 +181,7 @@ function App() {
 }
 
 function MovieInfo({
+  movInd,
   rank,
   movies,
   pic,
@@ -143,17 +189,20 @@ function MovieInfo({
   directors,
   writers,
   stars,
+  ...params
 }) {
   const [Like, setLike] = useState(0);
   const [disLike, setDislike] = useState(0);
   const incrementLike = () => setLike(Like + 1);
   const deleteMovie=()=>{
-    movies.map((data, index)=>{
-      return (
-        console.log(data, index)
-      )
-    }
-    )
+    let tempMovies = params.allMovies;
+    params.allMovies.forEach((mov,ind) => {
+      if(movInd == ind){
+        console.log(movInd,ind)
+        tempMovies.splice(ind,1)
+      }
+    })
+    params.setMovie([...tempMovies])
   }
   return (
     <div className="movieCard">
@@ -173,7 +222,7 @@ function MovieInfo({
       >
         <i class="fas fa-thumbs-down"></i> {disLike}
       </button>{" "}
-      <button className='btn-secondary button' onClick={deleteMovie}><i class="far fa-trash-alt"></i></button>
+      <button className='btn-secondary button' onClick={deleteMovie}>Delete</button>
       <br />
       <div className="msg">
         <h5>
